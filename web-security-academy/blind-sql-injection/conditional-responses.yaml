@@ -41,16 +41,16 @@ requests:
     extractors:
       - type: kval
         name: trackingid-cookie
-        internal: true
+        # internal: false
         kval:
           - "TrackingId"
         part: header
-      - type: kval
-        name: session-cookie
-        internal: true
-        kval:
-          - "session"
-        part: header
+      # - type: kval
+      #   name: session-cookie
+      #   internal: true
+      #   kval:
+      #     - "session"
+      #   part: header
   - raw:
       - |
         GET /{{trackingid-cookie}} HTTP/1.1
