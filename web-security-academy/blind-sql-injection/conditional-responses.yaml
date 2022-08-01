@@ -7,20 +7,8 @@ info:
   reference: https://portswigger.net/web-security/sql-injection/blind#exploiting-blind-sql-injection-by-triggering-conditional-responses
   tags: web-security-academy
 
-# requests:
-  # - method: POST
-  #   path:
-  #     - "http://{{BaseURL}}#/login"
-  #   body: \{\"email\":\"' OR 1=1 --admin\",\"password\":\"5ecr37\"\}
-  #   matchers:
-  #     - type: status
-  #       status:
-  #         - 200
-  #     - type: word
-  #       words:
-  #         - \"umail\":\"admin@juice-sh.op\"
+
 requests:
-# First we extract the trackingID Cookie
   - raw:
       - |
         GET / HTTP/1.1
