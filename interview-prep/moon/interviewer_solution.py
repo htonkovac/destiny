@@ -13,7 +13,7 @@ def expand_one_star(input_str):
                     yield sub_replacement
             else:
                 yield replacement
-    yield input_str
+    yield input_str # the interviewer made a mistake here, this should be under an else statement bcuz otherwise strings containing * will be printed
 
 #This is my reimplementaion (for practice - made without looking)
 def expand_star(input_str):
