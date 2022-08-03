@@ -2,7 +2,7 @@ import string
 
 alphanum = string.ascii_letters + string.digits
 alphanum = string.digits
-input_string = "ab*d*f"
+input_string = "ab*d*f*h"
 
 def expand_one_star(input_str):
     if '*' in input_str:
@@ -15,4 +15,19 @@ def expand_one_star(input_str):
                 yield replacement
     yield input_str
 
-print(list(expand_one_star(input_string)))
+#This is my reimplementaion (for practice - made without looking)
+def expand_star(input_str):
+    if "*" not in input_str:
+        yield input_str
+    
+    for i in alphanum:
+        replaced = input_str.replace("*", i, 1)
+        if '*' not in replaced:
+            yield replaced
+        else:
+            for i in expand_star(replaced):
+                yield i
+                
+
+print(list(expand_one_star(input_string))) # interviewer
+# print(list(expand_star(input_string))) # me
